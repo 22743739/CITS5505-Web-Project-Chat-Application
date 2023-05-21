@@ -1,0 +1,17 @@
+body {
+  margin: 0;
+}
+
+.main {
+  width: 1000px;
+  margin: 0 auto;
+  display: flex;
+}
+
+.left {
+  width: 600px;
+}
+
+.right {
+  width: 600px;
+}

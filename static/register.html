@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <link rel="stylesheet" type="text/css" href="/static/styles/global.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/static/bootstrap/bootstrap.min.css"
+    />
+    <script
+      rel="stylesheet"
+      type="text/javascript"
+      href="/static/bootstrap/bootstrap.min.js"
+    ></script>
+
+    <style>
+      .form-label:after {
+        content: '*';
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="main">
+      <section class="left">
+        <h2>Sign up for ChatChat</h2>
+        <form onsubmit="javascript:return false;" id="form">
+          <div class="form-outline mb-2">
+            <label class="form-label" for="formName">Name</label>
+            <input
+              type="text"
+              id="formName"
+              class="form-control"
+              required
+              name="name"
+            />
+          </div>
+
+          <div class="form-outline mb-2">
+            <label class="form-label" for="formEmail">Email address</label>
+            <input type="email" id="formEmail" class="form-control" required />
+          </div>
+
+
+          <div class="form-outline mb-2">
+            <label class="form-label" for="formMobileNumber">Mobile Number</label>
+            <input type="number" id="formMobileNumber" class="form-control" required />
+          </div>
+
+          <div class="form-outline mb-2">
+            <label class="form-label" for="formPassword">Password</label>
+            <input type="password" id="formPassword" class="form-control" required />
+          </div>
+
+          <div class="form-outline mb-2">
+            <label class="form-label" for="formPassword2">Confirm Password</label>
+            <input type="password" id="formPassword2" class="form-control" required />
+          </div>
+
+          <button class="btn btn-primary btn-block mb-2" id="signin-btn">
+            Sign in
+          </button>
+
+          <div class="invalid-feedback">You must agree before submitting.</div>
+
+          <div class="text-center">
+            <p>Already have an account?<a href="/login">Log in</a></p>
+          </div>
+        </form>
+      </section>
+      <section class="right">TODO</section>
+    </main>
+  </body>
+
+  <script>
+    var btn = document.querySelector('#signin-btn');
+    var form = document.querySelector('#form');
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var formData = new FormData(form);
+    });
+  </script>
+</html>
