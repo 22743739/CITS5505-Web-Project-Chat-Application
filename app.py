@@ -1,31 +1,34 @@
 
-from flask import Flask, render_template
+from flask import render_template
+from setup import app
+# user routes
+from user import *
 
-# Create App
-app = Flask(__name__, static_url_path='/static', template_folder='static')
-app.debug = True
 
-
-# Index Page
 @app.route('/')
 @app.route('/login')
+# Index Page
 def login():
     return render_template('login.html')
 
-# Register Page
+
 @app.route('/register')
+# Register Page
 def register():
     return render_template('register.html')
 
-# Home Page
+
 @app.route('/home')
+# Home Page
 def home():
     return render_template('home.html')
 
-# Search Page
+
 @app.route('/search')
+# Search Page
 def search():
     return render_template('search.html')
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="8000")
