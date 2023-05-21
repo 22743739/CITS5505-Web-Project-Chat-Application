@@ -6,6 +6,8 @@ from sqlalchemy.orm import aliased
 def get_chat_room_id(sender, receiver):
     if receiver == 0:
         return 'public'
+    if receiver == -1:
+        return 'chatGPT-' + str(sender)
     if int(sender) < int(receiver):
         return str(sender) + str(receiver)
     return str(receiver) + str(sender)
@@ -62,3 +64,7 @@ def create_chat_message(sender, receiver, content):
     )
     db.session.add(newMessage)
     db.session.commit()
+
+
+def is_ask_to_chatGPT(receiver):
+    return int(receiver) == -1

@@ -35,8 +35,10 @@ function getChatUsers() {
         var users = resp.data;
         window.userList = users;
 
-        var html =
-          '<li class="userList-item userList-public" data-key="0" data-name="public-room">Public Room</li>';
+        var html = `
+          <li class="userList-item userList-blod" data-key="-1" data-name="chat-gpt">Chat GPT</li>
+          <li class="userList-item userList-blod" data-key="0" data-name="public-room">Public Room</li>
+          `;
 
         users.forEach((user) => {
           html += `
@@ -51,7 +53,7 @@ function getChatUsers() {
           $(this).addClass('userList-item-active');
           var { key } = e.target.dataset;
           $('#textarea').val('');
-          cahtTo(key);
+          chatTo(key);
         });
       } else {
         $('.invalid-server').text(resp.message);
@@ -63,14 +65,19 @@ function getChatUsers() {
   });
 }
 
-function cahtTo(userId) {
-  // PUBLIC KEY
+function chatTo(userId) {
+  // PUBLIC ROOM
   if (userId === '0') {
     $('.receiver-name').html('Public Room');
     $('.chat-header-receiver').html('Public Room');
     $('.receiver-detail').html('');
+  } else if (userId === '-1') {
+    // CHAT GPT
+    $('.receiver-name').html('Chat GPT');
+    $('.chat-header-receiver').html('Chat GPT');
+    $('.receiver-detail').html('');
   } else {
-    const user = userList.find((user) => user.id == userId);
+    const user = userList.find((user) => Number(user.id) === Number(userId));
     $('.receiver-name').html(user.name);
     $('.chat-header-receiver').html(user.name);
     $('.receiver-detail').html(`
@@ -106,16 +113,20 @@ function cahtTo(userId) {
 function renderMessages(data) {
   let html = '';
   data.forEach((item) => {
-    const isMe = item.sender.id === userInfo.id;
+    const isChatGPT = item.sender === -1;
+    const isMe =
+      Number(item.senderInfo.id) == Number(userInfo.id) && !isChatGPT;
     html += `
-    <p class="row ${isMe ? 'row-me' : 'row-other'}">
+    <div class="chat-row ${isMe ? 'row-me' : 'row-other'}">
       <div class="author">
-      <p>【${item.senderInfo.name}】<span>${item.createAt}</span><p>
-      <p>
-      ${item.content}
-      </p>
+        <p>【${isChatGPT ? 'ChatGPT' : item.senderInfo.name}】
+          <span>${item.createAt}</span>
+        </p>
+        <p>
+        ${item.content}
+        </p>
       </div>
-    </p>
+    </div>
     `;
   });
   $('.chat-body').html(html);
