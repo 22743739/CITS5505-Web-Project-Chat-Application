@@ -4,6 +4,8 @@ from flask_socketio import SocketIO
 from setup import app
 # user routes
 from user import *
+# message routes
+from message import *
 # web socket
 from chat import *
 

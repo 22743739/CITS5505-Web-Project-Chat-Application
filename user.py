@@ -58,7 +58,47 @@ def user_register():
     )
 
 
-@app.route('/api/user/logout')
+@app.route("/api/user/info", methods=["GET"])
+def user_info():
+    sessionID = session.get("userId")
+    if sessionID:
+        match_user = db.session.query(User).where(
+            and_(User.id == sessionID)).all()
+        if len(match_user) > 0:
+            return jsonify(
+                {
+                    "success": True,
+                    "data": match_user[0].serialize_private,
+                    "message": "sucess",
+                }
+            )
+    response = jsonify({"success": False, 'message': 'Unauthorized'})
+    return response, 401
+
+
+@app.route('/api/users/chat', methods=["GET"])
+def chat_users():
+    sessionID = session.get("userId")
+    users = db.session.query(User).all()
+    users_s = [i.serialize_private for i in users]
+    filter_users = list(filter(lambda n: n['id'] != sessionID, users_s))
+    return jsonify(
+        {
+            "success": True,
+            "data": filter_users,
+            "message": "sucess",
+        }
+    )
+
+
+@app.route('/api/user/logout', methods=["POST"])
 def user_logout():
-    session.pop('userId')
-    return redirect('/login')
+    if session.get('userId'):
+        session.pop('userId')
+    return jsonify(
+        {
+            "success": True,
+            "data": {},
+            "message": "sucess",
+        }
+    )

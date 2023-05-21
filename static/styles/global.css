@@ -2,6 +2,18 @@ body {
   margin: 0;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+.error {
+  width: 900px;
+  min-height: 40px;
+  line-height: 40px;
+  margin: 0 auto;
+  margin-bottom: 12px;
+}
+
 .main {
   width: 1000px;
   margin-left: auto;
@@ -21,11 +33,35 @@ body {
   height: 400px;
 }
 
+/* mobile */
+@media only screen and (max-width: 480px) {
+  .main {
+    width: 100vw;
+    margin-top: 20px;
+    padding: 0 24px;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .left {
+    width: 100%;
+  }
+  .right{
+    width: 100%;
+    margin-top: 24px;
+    margin-bottom: 24px;
+  }
+  .error{
+    width: 100%;
+    min-height: 20px;
+    line-height: 20px;
+  }
+}
+
 .invalid-message {
   width: 100%;
   margin-top: 0.25rem;
   font-size: 0.875em;
-  color: var(--bs-form-invalid-color);
+  color: red;
 }
 
 /* for boostrap */
@@ -55,4 +91,9 @@ body {
   padding-bottom: 1.25rem;
   color: #fff;
   text-align: center;
+}
+
+.navbar {
+  border-bottom: 1px solid #eee;
+  padding: 0 60px;
 }

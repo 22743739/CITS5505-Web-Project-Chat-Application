@@ -47,10 +47,44 @@ class User(db.Model):
             "email": self.email,
             "mobileNumber": self.mobileNumber,
             "password": self.password,
-            "createAt": self.createAt,
+            "createAt": self.createAt.strftime("%d-%m-%Y %H:%M:%S"),
+
+        }
+
+    @property
+    def serialize_private(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "email": self.email,
+            "mobileNumber": self.mobileNumber,
+            # "password": self.password,
+            "createAt": self.createAt.strftime("%d-%m-%Y %H:%M:%S"),
+        }
+
+# Message Model
+
+
+class Message(db.Model):
+    __tablename__ = "message"
+    id = db.Column(db.Integer, primary_key=True)
+    sender = db.Column(db.Integer)
+    receiver = db.Column(db.Integer)
+    content = db.Column(db.String)
+    createAt = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+
+
+    @property
+    def serialize(self):
+        return {
+            "id": self.id,
+            "sender": self.sender,
+            "receiver": self.receiver,
+            "content": self.content,
+            "createAt": self.createAt.strftime("%d-%m-%Y %H:%M:%S"),
         }
 
 
 # create Tables
-# with app.app_context():
-#     db.create_all()
+with app.app_context():
+    db.create_all()

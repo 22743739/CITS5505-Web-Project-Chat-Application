@@ -125,29 +125,44 @@
           <div class="carousel-inner">
             <div class="carousel-item active">
               <div class="carousel-image">
-                <img alt="" src="/static/images/icon1.png" width="60" height="60"  />
+                <img
+                  alt=""
+                  src="/static/images/icon1.png"
+                  width="60"
+                  height="60"
+                />
               </div>
               <div class="carousel-caption d-none d-md-block">
-                <h5>Account segregation</h5>
-                <p>You can register your account for free.</p>
+                <h5>Welcome</h5>
+                <p>Welcome to ChatChat</p>
               </div>
             </div>
             <div class="carousel-item">
               <div class="carousel-image">
-                <img alt="" src="/static/images/icon2.png" width="60" height="60"  />
+                <img
+                  alt=""
+                  src="/static/images/icon2.png"
+                  width="60"
+                  height="60"
+                />
+              </div>
+              <div class="carousel-caption d-none d-md-block">
+                <h5>Chat Rooms</h5>
+                <p>ChatChat is an online free chat rooms.</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="carousel-image">
+                <img
+                  alt=""
+                  src="/static/images/icon3.png"
+                  width="60"
+                  height="60"
+                />
               </div>
               <div class="carousel-caption d-none d-md-block">
                 <h5>Simple</h5>
-                <p>The UI interface is simple and easy to use.</p>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="carousel-image">
-                <img alt="" src="/static/images/icon3.png" width="60" height="60"  />
-              </div>
-              <div class="carousel-caption d-none d-md-block">
-                <h5>Free</h5>
-                <p>ChatChat is an online free chat rooms.</p>
+                <p>Ability to chat via the Internet</p>
               </div>
             </div>
           </div>
@@ -183,9 +198,11 @@
     integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
     crossorigin="anonymous"
   ></script>
-
+  <script
+    src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"
+    crossorigin="anonymous"
+  ></script>
   <script type="text/javascript" src="/static/scripts/validator.js"></script>
-  <script type="text/javascript" src="/static/scripts/xhr.js"></script>
 
   <script>
     var btn = document.querySelector('#register-btn');
@@ -222,18 +239,23 @@
           }
         });
       } else {
-        xhr({
-          method: 'post',
+        $.ajax({
+          type: 'POST',
           url: '/api/user/register',
-          data: values,
-          done: (res) => {
-            if (res.success) {
+          data: JSON.stringify(values),
+          contentType: 'application/json',
+          dataType: 'json',
+          success: function (resp) {
+            if (resp.success) {
               form.reset();
               window.alert('Registration successful！');
               window.location = '/login';
             } else {
-              document.querySelector('.invalid-server').innerHTML = res.message;
+              $('.invalid-server').text(resp.message);
             }
+          },
+          failure: function (errMsg) {
+            $('.invalid-server').text(errMsg);
           },
         });
       }
