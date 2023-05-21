@@ -1,8 +1,11 @@
 
 from flask import render_template
+from flask_socketio import SocketIO
 from setup import app
 # user routes
 from user import *
+# web socket
+from chat import *
 
 
 @app.route('/')
@@ -32,3 +35,4 @@ def search():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="4000")
+    SocketIO.run(app)

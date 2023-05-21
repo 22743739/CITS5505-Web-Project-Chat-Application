@@ -2,6 +2,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
+from flask_socketio import SocketIO
 
 import os
 import datetime
@@ -21,6 +22,10 @@ app.secret_key = "super secret key"
 app.config["SESSION_TYPE"] = "filesystem"
 app.config["SESSION_PERMANENT"] = False
 session = Session(app)
+
+# Web Socket
+app.config['SECRET_KEY'] = 'secret'
+socketio = SocketIO(app)
 
 # User Model
 
