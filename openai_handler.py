@@ -1,6 +1,6 @@
 import openai
 
-openai.api_key = 'sk-xx'
+openai.api_key = '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'
 
 
 def askOpenAI(promt: str):
