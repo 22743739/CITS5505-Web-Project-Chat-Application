@@ -17,6 +17,37 @@ window.validator = {
   },
 };
 
+function validatorSignInForm(values) {
+  var errorMsgs = [];
+  if (!validator.required(values.email)) {
+    errorMsgs.push({
+      field: 'email',
+      label: 'Please provide field email',
+    });
+  } else {
+    if (!validator.isEmail(values.email)) {
+      errorMsgs.push({
+        field: 'email',
+        label: 'Please provide the correct email format',
+      });
+    }
+  }
+  if (!validator.required(values.password)) {
+    errorMsgs.push({
+      field: 'password',
+      label: 'Please provide field password',
+    });
+  } else {
+    if (validator.isMin(values.password, 5)) {
+      errorMsgs.push({
+        field: 'password',
+        label: 'The minimum length of a password is 5',
+      });
+    }
+  }
+  return errorMsgs;
+}
+
 function validatorRegisterForm(values) {
   var errorMsgs = [];
 
