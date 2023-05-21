@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, make_response, session
+from flask import Flask, jsonify, request, redirect, make_response, session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import exists, and_
 from setup import app, db, User
@@ -32,7 +32,6 @@ def user_login():
     return resp
 
 
-# register
 @app.route("/api/user/register", methods=["POST"])
 def user_register():
     body = json.loads(request.data)
@@ -57,3 +56,9 @@ def user_register():
             "message": "sucess",
         }
     )
+
+
+@app.route('/api/user/logout')
+def user_logout():
+    session.pop('userId')
+    return redirect('/login')

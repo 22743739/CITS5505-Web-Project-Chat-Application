@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Login</title>
+    <title>Register</title>
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
@@ -13,7 +13,6 @@
       href="/static/bootstrap/bootstrap.min.css"
     />
     <script
-      rel="stylesheet"
       type="text/javascript"
       href="/static/bootstrap/bootstrap.min.js"
     ></script>
@@ -39,34 +38,64 @@
               required
               name="name"
             />
+            <div class="invalid-message invalid-name"></div>
           </div>
 
           <div class="form-outline mb-2">
             <label class="form-label" for="formEmail">Email address</label>
-            <input type="email" id="formEmail" class="form-control" required />
+            <input
+              type="email"
+              id="formEmail"
+              class="form-control"
+              required
+              name="email"
+            />
+            <div class="invalid-message invalid-email"></div>
           </div>
 
-
           <div class="form-outline mb-2">
-            <label class="form-label" for="formMobileNumber">Mobile Number</label>
-            <input type="number" id="formMobileNumber" class="form-control" required />
+            <label class="form-label" for="formMobileNumber"
+              >Mobile Number</label
+            >
+            <input
+              type="number"
+              id="formMobileNumber"
+              class="form-control"
+              required
+              name="mobileNumber"
+            />
+            <div class="invalid-message invalid-mobileNumber"></div>
           </div>
 
           <div class="form-outline mb-2">
             <label class="form-label" for="formPassword">Password</label>
-            <input type="password" id="formPassword" class="form-control" required />
+            <input
+              type="password"
+              id="formPassword"
+              class="form-control"
+              required
+              name="password"
+            />
+            <div class="invalid-message invalid-password"></div>
           </div>
 
           <div class="form-outline mb-2">
-            <label class="form-label" for="formPassword2">Confirm Password</label>
-            <input type="password" id="formPassword2" class="form-control" required />
+            <label class="form-label" for="formPassword2"
+              >Confirm Password</label
+            >
+            <input
+              type="password"
+              id="formPassword2"
+              class="form-control"
+              required
+              name="password2"
+            />
+            <div class="invalid-message invalid-password2"></div>
           </div>
-
+          <div class="invalid-message invalid-server"></div>
           <button class="btn btn-primary btn-block mb-2" id="signin-btn">
             Sign in
           </button>
-
-          <div class="invalid-feedback">You must agree before submitting.</div>
 
           <div class="text-center">
             <p>Already have an account?<a href="/login">Log in</a></p>
@@ -77,12 +106,58 @@
     </main>
   </body>
 
+  <script type="text/javascript" src="/static/scripts/validator.js"></script>
+  <script type="text/javascript" src="/static/scripts/xhr.js"></script>
+
   <script>
     var btn = document.querySelector('#signin-btn');
     var form = document.querySelector('#form');
+
+    function removeValidationMessage() {
+      document.querySelectorAll('.invalid-message').forEach((dom) => {
+        dom.innerHTML = '';
+      });
+    }
+
     btn.addEventListener('click', function (e) {
       e.preventDefault();
+      removeValidationMessage();
+
       var formData = new FormData(form);
+      var errorMsgs = [];
+      var values = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        mobileNumber: formData.get('mobileNumber'),
+        password: formData.get('password'),
+        password2: formData.get('password2'),
+      };
+
+      console.log(values, 'values');
+      var errorMsgs = validatorRegisterForm(values);
+
+      if (errorMsgs.length > 0) {
+        errorMsgs.forEach((item) => {
+          const dom = document.querySelector('.invalid-' + item.field);
+          if (dom) {
+            dom.innerHTML = item.label;
+          }
+        });
+      } else {
+        xhr({
+          method: 'post',
+          url: '/api/user/register',
+          data: values,
+          done: (res) => {
+            if (res.success) {
+              window.alert('Registration successful！');
+              window.location = '/login';
+            } else {
+              document.querySelector('.invalid-server').innerHTML = res.message;
+            }
+          },
+        });
+      }
     });
   </script>
 </html>
